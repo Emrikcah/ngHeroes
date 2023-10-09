@@ -22,7 +22,7 @@ import { MessageService } from '../message.service';
         color: #a80000;
         font-family: Arial, Helvetica, sans-serif;
         font-weight: lighter;
-      }
+      } 
 
       .clear {
         color: #333;
