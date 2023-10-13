@@ -12,7 +12,7 @@ import {HeroDetailComponent} from '../hero-detail/hero-detail.component'
 @Component({
   selector: 'app-heroes',
   standalone: true,
-  imports: [CommonModule, FormsModule,HeroDetailComponent,MessageService],
+  imports: [CommonModule, FormsModule,HeroDetailComponent],
   template: `
     <h2>My Heroes</h2>
     <ul class="heroes">
