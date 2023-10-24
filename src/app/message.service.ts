@@ -15,4 +15,3 @@ export class MessageService {
   }
 }
 
-//this service must be standalone. How do i make a service standalone?

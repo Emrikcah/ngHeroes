@@ -3,108 +3,90 @@ import { CommonModule } from '@angular/common';
 import { IHero } from '../Interface/ihero';
 import { FormsModule } from '@angular/forms';
 import { HeroService } from '../hero.service';
-import { MessageService } from '../message.service';
 
-import {HeroDetailComponent} from '../hero-detail/hero-detail.component'
+import { HeroDetailComponent } from '../hero-detail/hero-detail.component';
 
-
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-heroes',
   standalone: true,
-  imports: [CommonModule, FormsModule,HeroDetailComponent],
+  imports: [CommonModule, FormsModule, HeroDetailComponent, RouterLink],
   template: `
     <h2>My Heroes</h2>
     <ul class="heroes">
       <li *ngFor="let hero of heroes">
-        <button
-          [class.selected]="hero === selectedHero"
-          type="button"
-          (click)="onSelect(hero)"
-        >
-          <span class="badge">{{ hero.id }}</span>
-          <span class="name">{{ hero.name }}</span>
-        </button>
+        <a routerLink="/detail/{{ hero.id }}">
+          <span class="badge">{{ hero.id }}</span> {{ hero.name }}
+        </a>
       </li>
     </ul>
-    <!-- app-detail is what has the hero property -->
-    <app-hero-detail [hero]="selectedHero"></app-hero-detail>
-    
+    <!-- app-detail is what has the hero property
+    <app-hero-detail [hero]="selectedHero"></app-hero-detail> -->
   `,
   styles: [
     `
-      /* HeroesComponent's private CSS styles */
-      .heroes {
-        margin: 0 0 2em 0;
-        list-style-type: none;
-        padding: 0;
-        width: 15em;
-      }
+    /* HeroesComponent's private CSS styles */
+.heroes {
+  margin: 0 0 2em 0;
+  list-style-type: none;
+  padding: 0;
+  width: 15em;
+}
+.heroes li {
+  position: relative;
+  cursor: pointer;
+}
 
-      .heroes li {
-        display: flex;
-      }
+.heroes li:hover {
+  left: .1em;
+}
 
-      .heroes button {
-        flex: 1;
-        cursor: pointer;
-        position: relative;
-        left: 0;
-        background-color: #eee;
-        margin: 0.5em;
-        padding: 0;
-        border-radius: 4px;
-        display: flex;
-        align-items: stretch;
-        height: 1.8em;
-      }
+.heroes a {
+  color: #333;
+  text-decoration: none;
+  background-color: #EEE;
+  margin: .5em;
+  padding: .3em 0;
+  height: 1.6em;
+  border-radius: 4px;
+  display: block;
+  width: 100%;
+}
 
-      .heroes button:hover {
-        color: #2c3a41;
-        background-color: #e6e6e6;
-        left: 0.1em;
-      }
+.heroes a:hover {
+  color: #2c3a41;
+  background-color: #e6e6e6;
+}
 
-      .heroes button:active {
-        background-color: #525252;
-        color: #fafafa;
-      }
+.heroes a:active {
+  background-color: #525252;
+  color: #fafafa;
+}
 
-      .heroes button.selected {
-        background-color: black;
-        color: white;
-      }
-
-      .heroes button.selected:hover {
-        background-color: #505050;
-        color: white;
-      }
-
-      .heroes button.selected:active {
-        background-color: black;
-        color: white;
-      }
-
-      .heroes .badge {
-        display: inline-block;
-        font-size: small;
-        color: white;
-        padding: 0.8em 0.7em 0 0.7em;
-        background-color: #405061;
-        line-height: 1em;
-        margin-right: 0.8em;
-        border-radius: 4px 0 0 4px;
-      }
-
-      .heroes .name {
-        align-self: center;
-      }
+.heroes .badge {
+  display: inline-block;
+  font-size: small;
+  color: white;
+  padding: 0.8em 0.7em 0 0.7em;
+  background-color: #405061;
+  line-height: 1em;
+  position: relative;
+  left: -1px;
+  top: -4px;
+  height: 1.8em;
+  min-width: 16px;
+  text-align: right;
+  margin-right: .8em;
+  border-radius: 4px 0 0 4px;
+}
     `,
   ],
 })
 export class HeroesComponent implements OnInit {
-
-  constructor(private heroService: HeroService, private messageService: MessageService) { }
+  constructor(
+    private heroService: HeroService,
+  ) {}
 
   ngOnInit(): void {
     this.getHeroes();
@@ -112,19 +94,12 @@ export class HeroesComponent implements OnInit {
 
   //properties
   heroes: IHero[] = [];
-  selectedHero?: IHero;
 
-  //methods
-  onSelect(hero: IHero): void {
-    this.selectedHero = hero;
-    this.messageService.add(`HeroesComponent: Selected hero id=${hero.id}`);
-  }
+  
 
   getHeroes(): void {
-  this.heroService.getHeroes()
-      .subscribe(heroes => this.heroes = heroes);
-}
-
+    this.heroService.getHeroes().subscribe((h) => (this.heroes = h));
+  }
 }
 
 // While you could call getHeroes() in the constructor, that's not the best practice.
